@@ -1,3 +1,4 @@
+const { z } = require("zod");
 const {
   OK,
   INTERNAL_SERVER_ERROR,
@@ -11,22 +12,27 @@ const { registerSchema, loginSchema } = require("../schemas/auth.schema");
 const { setAuthCookies, clearAuthCookies } = require("../utils/cookies");
 
 const { signToken } = require("../utils/jwt");
+const { errorHandler } = require("../utils/errorHandler");
 
 module.exports = {
   registerHandler: async (req, res) => {
     try {
-      const data = {
-        email: "alisahi@gmail.com",
-        password: "123456789",
-        confirmPassword: "123456789",
-      };
+      console.log("Valuesssssss", req.body);
+
+      // const data = {
+      //   email: "alisahisss@gmail.com",
+      //   password: "123456789",
+      //   confirmPassword: "123456789",
+      // };
 
       const request = registerSchema.parse({
-        ...data,
+        ...req.body,
       });
 
+      const { email } = req.body;
+
       const existingUser = await UserModel.exists({
-        email: data.email,
+        email,
       });
 
       if (existingUser) {
@@ -43,32 +49,35 @@ module.exports = {
         .status(CREATED)
         .json({ message: "User Registered Successfully", user: userWithoutPassword });
     } catch (error) {
-      console.log("RESGISTER HANDLER", error);
-      res.status(INTERNAL_SERVER_ERROR).json({ message: "Error Creating User" });
+      errorHandler(res, error, "Error Creating User");
     }
   },
 
   loginHandler: async (req, res) => {
     try {
-      const data = {
-        email: "alisahi@gmail.com",
-        password: "123456789",
-      };
+      console.log("valuesss", req.body);
+      // const data = {
+      //   email: "alisahi@gmail.com",
+      //   password: "123456789",
+      // };
+
       const validatedData = loginSchema.parse({
-        ...data,
+        ...req.body,
       });
 
       const { email, password } = validatedData;
 
+      console.log("paswordddd", password);
+
       const user = await UserModel.findOne({ email });
 
       if (!user) {
-        res.status(NOT_FOUND).json({ message: "Invalid email or password" });
+        return res.status(NOT_FOUND).json({ message: "Invalid email or password" });
       }
       const isValid = await user.comparePassword(password);
 
       if (!isValid) {
-        res.status(UNAUTHORIZED).json({ message: "Invalid email or password" });
+        return res.status(UNAUTHORIZED).json({ message: "Invalid email or password" });
       }
 
       const accessToken = signToken(user._id);
