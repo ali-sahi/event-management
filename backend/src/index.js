@@ -5,7 +5,10 @@ const cookieParser = require("cookie-parser");
 
 const { PORT, NODE_ENV, APP_ORIGIN } = require("./constants/envConstants");
 const { connectToDatabase } = require("./config/db");
+
 const authRoutes = require("./routes/auth.route");
+const eventRoutes = require("./routes/event.route");
+const userRoutes = require("./routes/user.route");
 
 const app = express();
 
@@ -28,7 +31,10 @@ app.get("/", (_, res) => {
   });
 });
 
+// Routes
 app.use("/auth", authRoutes);
+app.use("/event", eventRoutes);
+app.use("/user", userRoutes);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on Port ${PORT} in ${NODE_ENV} enviroment`);

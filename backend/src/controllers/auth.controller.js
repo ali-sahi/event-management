@@ -17,14 +17,6 @@ const { errorHandler } = require("../utils/errorHandler");
 module.exports = {
   registerHandler: async (req, res) => {
     try {
-      console.log("Valuesssssss", req.body);
-
-      // const data = {
-      //   email: "alisahisss@gmail.com",
-      //   password: "123456789",
-      //   confirmPassword: "123456789",
-      // };
-
       const request = registerSchema.parse({
         ...req.body,
       });
@@ -55,12 +47,6 @@ module.exports = {
 
   loginHandler: async (req, res) => {
     try {
-      console.log("valuesss", req.body);
-      // const data = {
-      //   email: "alisahi@gmail.com",
-      //   password: "123456789",
-      // };
-
       const validatedData = loginSchema.parse({
         ...req.body,
       });

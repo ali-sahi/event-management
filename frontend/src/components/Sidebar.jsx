@@ -1,14 +1,17 @@
 import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
 import { adminRoutes } from "../routes/adminRoutes";
 import { userRoutes } from "../routes/userRoutes";
+import { useNavigate } from "react-router";
 
 const Sidebar = () => {
   const role = "user";
 
+  const navigate = useNavigate();
+
   const renderAdminMenuItems = () => {
     return adminRoutes.map((menuItem) => (
       <ListItem key={menuItem.href} disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => navigate(menuItem.href)}>
           <ListItemIcon>
             <menuItem.icon />
           </ListItemIcon>
@@ -21,7 +24,7 @@ const Sidebar = () => {
   const renderUserMenuItems = () => {
     return userRoutes.map((menuItem) => (
       <ListItem key={menuItem.href} disablePadding>
-        <ListItemButton>
+        <ListItemButton onClick={() => navigate(menuItem.href)}>
           <ListItemIcon>
             {" "}
             <menuItem.icon />

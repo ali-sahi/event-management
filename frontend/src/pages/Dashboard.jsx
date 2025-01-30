@@ -1,7 +1,10 @@
 import React from "react";
+import AdminDashboard from "./AdminDashboard";
+import UserDashboard from "./UserDashboard";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  const user = "user";
+  return <>{user === "admin" ? <AdminDashboard /> : <UserDashboard />}</>;
 };
 
 export default Dashboard;

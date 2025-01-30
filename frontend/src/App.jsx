@@ -18,19 +18,27 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+          {/* <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} /> */}
           <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Singup />} />
 
           <Route path="/" element={<PrivateRoutes allowedRoles={["admin"]} />}>
             {adminRoutes.map((item) => (
-              <Route key={item.href} path={item.href} element={<item.component />} />
+              <Route
+                key={item.href}
+                path={item.href}
+                element={isLoggedIn ? <item.component /> : <Navigate to="/login" />}
+              />
             ))}
           </Route>
 
           <Route path="/" element={<PrivateRoutes allowedRoles={["user", "admin"]} />}>
             {userRoutes.map((item) => (
-              <Route key={item.href} path={item.href} element={<item.component />} />
+              <Route
+                key={item.href}
+                path={item.href}
+                element={isLoggedIn ? <item.component /> : <Navigate to="/login" />}
+              />
             ))}
           </Route>
         </Routes>
