@@ -3,6 +3,15 @@ import CreateEvent from "../pages/CreateEvent";
 import AllEvents from "../pages/AllEvents";
 import Dashboard from "../pages/Dashboard";
 
+// export const userRoutes = [
+//   {
+//     icon: DashboardOutlined,
+//     label: "Dashboard",
+//     href: "/",
+//     component: Dashboard,
+//   },
+// ];
+
 export const userRoutes = [
   {
     icon: DashboardOutlined,

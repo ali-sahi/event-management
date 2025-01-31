@@ -6,6 +6,8 @@ import { getUserFromLocalStorage, removeUserFromLocalStorage, setUserToLocalStor
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  // const userValue = userFromStorage ? userFromStorage : null;
+
   const [user, setUser] = useState(null);
 
   const registerUser = async (values) => {
@@ -23,18 +25,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await API.post("/auth/logout");
+    await API.get("/auth/logout");
     removeUserFromLocalStorage();
     setUser(null);
   };
 
   useEffect(() => {
-    const user = getUserFromLocalStorage();
-    if (!user) {
-      return;
-    }
-    setUser(user);
+    const userFromStorage = getUserFromLocalStorage();
+    setUser(userFromStorage);
   }, []);
+
   return <AuthContext.Provider value={{ user, login, logout, registerUser }}>{children}</AuthContext.Provider>;
 };
 

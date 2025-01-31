@@ -34,6 +34,11 @@ userSchema.methods.omitPassword = function () {
   return user;
 };
 
+userSchema.statics.isAdmin = async function (adminId) {
+  const user = await this.findById(adminId);
+  return user?.role === "admin";
+};
+
 const userModel = mongoose.model("User", userSchema);
 
 module.exports = userModel;

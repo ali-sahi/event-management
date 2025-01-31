@@ -1,50 +1,63 @@
 import "./App.css";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import Login from "./pages/Login";
-import Singup from "./pages/Singup";
-import Home from "./pages/Home";
+import { BrowserRouter, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
-
-import { useAuth } from "./providers/AuthProvider";
-import { adminRoutes } from "./routes/adminRoutes";
-import { userRoutes } from "./routes/userRoutes";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import { useTheme } from "@mui/material";
+import Dashboard from "./pages/Dashboard";
+import ManageUsers from "./pages/ManageUsers";
+import ManageEvents from "./pages/ManageEvents";
+import CreateEvent from "./pages/CreateEvent";
+import AllEvents from "./pages/AllEvents";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Singup";
 
 const App = () => {
-  const { user } = useAuth();
-  const isLoggedIn = user ? true : false;
+  const theme = useTheme();
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {/* <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} /> */}
-          <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
-          <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Singup />} />
-
-          <Route path="/" element={<PrivateRoutes allowedRoles={["admin"]} />}>
-            {adminRoutes.map((item) => (
-              <Route
-                key={item.href}
-                path={item.href}
-                element={isLoggedIn ? <item.component /> : <Navigate to="/login" />}
-              />
-            ))}
+          <Route element={<PrivateRoutes allowedRoles={["admin", "user"]} />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Signup />} />
           </Route>
 
-          <Route path="/" element={<PrivateRoutes allowedRoles={["user", "admin"]} />}>
-            {userRoutes.map((item) => (
-              <Route
-                key={item.href}
-                path={item.href}
-                element={isLoggedIn ? <item.component /> : <Navigate to="/login" />}
-              />
-            ))}
+          <Route element={<PrivateRoutes allowedRoles={["admin"]} />}>
+            <Route path="/manage-users" element={<ManageUsers />} />
+            <Route path="/manage-events" element={<ManageEvents />} />
+          </Route>
+
+          <Route element={<PrivateRoutes allowedRoles={["user"]} />}>
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/all-events" element={<AllEvents />} />
           </Route>
         </Routes>
       </BrowserRouter>
 
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: theme.palette.background.paper,
+            color: theme.palette.text.primary,
+            borderRadius: "8px",
+            padding: "10px 20px",
+          },
+          success: {
+            style: {
+              background: theme.palette.success.main,
+              color: theme.palette.text.primary,
+            },
+          },
+          error: {
+            style: {
+              background: theme.palette.error.main,
+              color: theme.palette.text.primary,
+            },
+          },
+        }}
+      />
     </>
   );
 };

@@ -7,11 +7,21 @@ import { CheckAxiosError } from "../utils/checkAxiosError";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { useFetchEvents } from "../hooks/useFetchEvents";
 
-const ManageUsers = () => {
+const ManageEvents = () => {
   const { user } = useAuth();
+  const { eventsList } = useFetchEvents();
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+
+  useEffect(() => {
+    const formattedRows = eventsList.map((event) => ({
+      ...event,
+      id: event._id,
+    }));
+    setRows(formattedRows);
+  }, [eventsList]);
 
   const handleEditClick = (id) => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -25,7 +35,7 @@ const ManageUsers = () => {
     try {
       console.log("asdasdasd", id);
 
-      const res = await API.delete(`/user/delete/${user._id}`, { data: { userId: id } });
+      const res = await API.delete(`/event/delete_event/${user._id}`, { data: { eventId: id } });
       toast.success(res.data.message);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
@@ -46,7 +56,7 @@ const ManageUsers = () => {
 
   const processRowUpdate = async (newRow) => {
     try {
-      const res = await API.post(`/user/change_role/${user._id}`, { userId: newRow.id, role: newRow.role });
+      const res = await API.post(`/event/change_status/${user._id}`, { eventId: newRow.id, status: newRow.status });
       toast.success(res.data.message);
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
@@ -58,29 +68,33 @@ const ManageUsers = () => {
 
   const columns = [
     {
-      field: "name",
-      headerName: "Name",
+      field: "eventTitle",
+      headerName: "Event Title",
       width: 150,
-      valueFormatter: (params) => "test",
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "venueAdress",
+      headerName: "Venue Adress",
       width: 200,
     },
     {
-      field: "createdAt",
-      headerName: "Joined Date",
+      field: "eventDate",
+      headerName: "Event Date",
       width: 150,
       valueFormatter: (params) => dayjs(params.value).format("DD MMM, YYYY"),
     },
     {
-      field: "role",
-      headerName: "Role",
+      field: "eventTime",
+      headerName: "Event Time",
+      width: 150,
+      valueFormatter: (params) => dayjs(params.value).format("h:mm A"),
+    },
+    {
+      field: "status",
+      headerName: "Status",
       editable: true,
       type: "singleSelect",
-      valueOptions: ["user", "admin"],
-
+      valueOptions: ["pending", "approved", "rejected"],
       width: 150,
     },
     {
@@ -135,20 +149,6 @@ const ManageUsers = () => {
     },
   ];
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await API.get(`/user/get_users/${user._id}`);
-        const transformedData = res.data.allUsers.map((user) => {
-          return { ...user, id: user._id };
-        });
-        setRows(transformedData);
-      } catch (error) {
-        CheckAxiosError(error);
-      }
-    };
-    fetchUsers();
-  }, []);
   return (
     <Paper>
       <DataGrid
@@ -163,4 +163,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default ManageEvents;

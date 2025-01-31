@@ -1,7 +1,9 @@
 import { Badge, Email } from "@mui/icons-material";
 import { Box, Button, Divider, List, ListItem, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material";
+import { useAuth } from "../providers/AuthProvider";
 
 const UserProfile = ({ email, role }) => {
+  const { logout } = useAuth();
   return (
     <>
       <Stack spacing={1}>
@@ -25,7 +27,9 @@ const UserProfile = ({ email, role }) => {
         </ListItem>
       </List>
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button variant="contained">Logout</Button>
+        <Button variant="contained" onClick={async () => await logout()}>
+          Logout
+        </Button>
       </Box>
     </>
   );

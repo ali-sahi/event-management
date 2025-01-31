@@ -77,6 +77,7 @@ module.exports = {
       res.status(INTERNAL_SERVER_ERROR).json({ message: "Error Loggin In" });
     }
   },
+
   logoutHandler: async (req, res) => {
     try {
       return clearAuthCookies(res).status(OK).json({ message: "Logout successful" });

@@ -1,10 +1,14 @@
 import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
-import { CheckAxiosError } from "../utils/checkAxiosError";
-import { useAuth } from "../providers/AuthProvider";
-import { Link } from "react-router";
-import { loginSchema } from "../schemas/authSchema";
-import WelcomeHeading from "../components/WelcomeHeading";
+
+import { Link, useNavigate } from "react-router";
+
+import WelcomeHeading from "../../components/WelcomeHeading";
+import { CheckAxiosError } from "../../utils/checkAxiosError";
+import { useAuth } from "../../providers/AuthProvider";
+
+import { loginSchema } from "../../schemas/authSchema";
+import CustomFieldError from "../../components/CustomFieldError";
 
 const initialValues = {
   email: "",
@@ -13,10 +17,12 @@ const initialValues = {
 
 const Login = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
       await login(values);
+      navigate("/");
     } catch (error) {
       CheckAxiosError(error);
     }
@@ -34,27 +40,13 @@ const Login = () => {
         <WelcomeHeading />
 
         <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={loginSchema}>
-          {({ isSubmitting, touched, errors }) => (
+          {({ isSubmitting }) => (
             <Form>
               <Stack spacing={3}>
-                <Field
-                  name="email"
-                  as={TextField}
-                  type="email"
-                  label="Email"
-                  fullWidth
-                  error={touched.email && !!errors.email}
-                  helperText={touched.email && errors.email}
-                />
-                <Field
-                  name="password"
-                  as={TextField}
-                  type="password"
-                  label="Password"
-                  fullWidth
-                  error={touched.password && !!errors.password}
-                  helperText={touched.password && errors.password}
-                />
+                <Field name="email" as={TextField} type="email" label="Email" fullWidth />
+                <CustomFieldError name={"email"} />
+                <Field name="password" as={TextField} type="password" label="Password" fullWidth />
+                <CustomFieldError name={"password"} />
 
                 <Typography variant="body2" sx={{ textAlign: "center" }}>
                   Don&apos;t have an account?{" "}

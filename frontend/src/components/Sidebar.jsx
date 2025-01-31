@@ -1,17 +1,27 @@
 import { Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
 import { adminRoutes } from "../routes/adminRoutes";
 import { userRoutes } from "../routes/userRoutes";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { useAuth } from "../providers/AuthProvider";
 
 const Sidebar = () => {
-  const role = "user";
+  const { user } = useAuth();
+  const role = user.role;
+
+  const { pathname } = useLocation();
+
+  const isActive = (menuItemPath) => {
+    return (
+      (pathname === "/" && menuItemPath === "/") || pathname === menuItemPath || pathname.startsWith(`${menuItemPath}/`)
+    );
+  };
 
   const navigate = useNavigate();
 
   const renderAdminMenuItems = () => {
     return adminRoutes.map((menuItem) => (
       <ListItem key={menuItem.href} disablePadding>
-        <ListItemButton onClick={() => navigate(menuItem.href)}>
+        <ListItemButton onClick={() => navigate(menuItem.href)} selected={isActive(menuItem.href)}>
           <ListItemIcon>
             <menuItem.icon />
           </ListItemIcon>
@@ -24,7 +34,7 @@ const Sidebar = () => {
   const renderUserMenuItems = () => {
     return userRoutes.map((menuItem) => (
       <ListItem key={menuItem.href} disablePadding>
-        <ListItemButton onClick={() => navigate(menuItem.href)}>
+        <ListItemButton onClick={() => navigate(menuItem.href)} selected={isActive(menuItem.href)}>
           <ListItemIcon>
             {" "}
             <menuItem.icon />
@@ -53,8 +63,6 @@ const Sidebar = () => {
         {role === "admin" && renderAdminMenuItems()}
         {role === "user" && renderUserMenuItems()}
       </List>
-
-      <List></List>
     </Drawer>
   );
 };

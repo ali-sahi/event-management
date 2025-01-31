@@ -12,7 +12,6 @@ const userRoutes = require("./routes/user.route");
 
 const app = express();
 
-//Middlewares
 app.use(
   cors({
     origin: APP_ORIGIN,
@@ -24,14 +23,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// health check
+// just for testing purpose
 app.get("/", (_, res) => {
   return res.status(200).json({
     status: "healthy",
   });
 });
 
-// Routes
 app.use("/auth", authRoutes);
 app.use("/event", eventRoutes);
 app.use("/user", userRoutes);
