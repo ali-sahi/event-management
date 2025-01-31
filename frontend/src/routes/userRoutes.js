@@ -1,13 +1,10 @@
 import { DashboardOutlined, EmojiEvents, Queue } from "@mui/icons-material";
-import AllEvents from "../pages/AllEvents";
-import Dashboard from "../pages/Dashboard";
 
 export const userRoutes = [
   {
     icon: DashboardOutlined,
     label: "Dashboard",
     href: "/",
-    component: Dashboard,
   },
   {
     icon: Queue,
@@ -18,6 +15,5 @@ export const userRoutes = [
     icon: EmojiEvents,
     label: "All Events",
     href: "/all-events",
-    component: AllEvents,
   },
 ];

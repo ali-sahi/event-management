@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../config/apiClient";
 import { CheckAxiosError } from "../utils/checkAxiosError";
-import toast from "react-hot-toast";
 
 export const useFetchEvents = () => {
   const [eventsList, setEventList] = useState([]);

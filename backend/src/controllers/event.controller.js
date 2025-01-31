@@ -37,14 +37,24 @@ module.exports = {
     try {
       const { userId } = req;
 
-      console.log(userId);
-
       const isUser = await UserModel.isUser(userId);
       const isAdmin = await UserModel.isAdmin(userId);
 
       if (isUser || isAdmin) {
-        const eventsList = await EventModel.find();
-        return res.status(OK).json({ message: "Event Created", eventsList });
+        const { page = 1, limit = 1 } = req.query;
+
+        const eventsList = await EventModel.find({ status: "approved" })
+          .skip((parseInt(page) - 1) * limit)
+          .limit(parseInt(limit));
+
+        const totalEvents = await EventModel.countDocuments({ status: "approved" });
+
+        return res.status(OK).json({
+          message: "Event Created",
+          eventsList,
+          totalPages: Math.ceil(totalEvents / limit),
+          currentPage: parseInt(page),
+        });
       }
 
       return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });

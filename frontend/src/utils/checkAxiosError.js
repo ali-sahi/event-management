@@ -8,7 +8,7 @@ export const CheckAxiosError = (error, customMsg = "") => {
     error.response.data?.message !== "Token expired decode"
   ) {
     toast.error(customMsg || error.response.data.message);
-    console.log(error);
+    console.log("Axios Error", error);
   } else {
     console.log(error);
   }

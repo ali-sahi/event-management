@@ -10,7 +10,7 @@ import Signup from "./pages/auth/Singup";
 import Dashboard from "./pages/Dashboard";
 
 import ManageEvents from "./pages/admin/ManageEvents";
-import ManageUsers from "./pages/ManageUsers";
+import ManageUsers from "./pages/admin/ManageUsers";
 
 import CreateEvent from "./pages/user/CreateEvent";
 import AllEvents from "./pages/user/AllEvents";

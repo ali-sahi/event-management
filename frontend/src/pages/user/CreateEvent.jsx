@@ -30,7 +30,6 @@ const CreateEvent = () => {
     } catch (error) {
       CheckAxiosError(error);
     }
-    console.log(values);
   };
   return (
     <Paper sx={{ padding: "50px" }}>

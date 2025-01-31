@@ -19,7 +19,9 @@ const SessionModal = () => {
         <DialogContentText>You will be redirected to the login page</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>OK</Button>
+        <Button onClick={handleClose} variant="contained">
+          OK
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -4,7 +4,7 @@ const { UserRole } = require("../constants/roles");
 
 module.exports = {
   signToken: (userId) => {
-    return jwt.sign({ userId, role: UserRole }, JWT_SECRET, { expiresIn: "1m" });
+    return jwt.sign({ userId, role: UserRole }, JWT_SECRET, { expiresIn: "5m" });
   },
   verifyToken: (token) => {
     try {
