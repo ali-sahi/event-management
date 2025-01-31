@@ -33,9 +33,7 @@ const ManageEvents = () => {
 
   const handleDeleteClick = async (id) => {
     try {
-      console.log("asdasdasd", id);
-
-      const res = await API.delete(`/event/delete_event/${user._id}`, { data: { eventId: id } });
+      const res = await API.delete("/event/delete_event", { data: { eventId: id } });
       toast.success(res.data.message);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
@@ -56,7 +54,7 @@ const ManageEvents = () => {
 
   const processRowUpdate = async (newRow) => {
     try {
-      const res = await API.post(`/event/change_status/${user._id}`, { eventId: newRow.id, status: newRow.status });
+      const res = await API.post("/event/change_status", { eventId: newRow.id, status: newRow.status });
       toast.success(res.data.message);
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));

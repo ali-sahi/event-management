@@ -1,4 +1,4 @@
 module.exports = {
-  UserRole: "User",
-  AdminRole: "Admin",
+  UserRole: "user",
+  AdminRole: "admin",
 };

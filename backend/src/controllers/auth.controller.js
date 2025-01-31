@@ -1,12 +1,5 @@
 const { z } = require("zod");
-const {
-  OK,
-  INTERNAL_SERVER_ERROR,
-  CONFLICT,
-  NOT_FOUND,
-  UNAUTHORIZED,
-  CREATED,
-} = require("../constants/httpStatusCode");
+const { OK, CONFLICT, NOT_FOUND, UNAUTHORIZED, CREATED } = require("../constants/httpStatusCode");
 const UserModel = require("../models/user.model");
 const { registerSchema, loginSchema } = require("../schemas/auth.schema");
 const { setAuthCookies, clearAuthCookies } = require("../utils/cookies");
@@ -53,8 +46,6 @@ module.exports = {
 
       const { email, password } = validatedData;
 
-      console.log("paswordddd", password);
-
       const user = await UserModel.findOne({ email });
 
       if (!user) {
@@ -73,8 +64,7 @@ module.exports = {
         .status(OK)
         .json({ message: "Login successful", user: userWithoutPassword });
     } catch (error) {
-      console.log("RESGISTER HANDLER", error);
-      res.status(INTERNAL_SERVER_ERROR).json({ message: "Error Loggin In" });
+      errorHandler(res, error, "Error Loggin In");
     }
   },
 
@@ -82,8 +72,7 @@ module.exports = {
     try {
       return clearAuthCookies(res).status(OK).json({ message: "Logout successful" });
     } catch (error) {
-      console.log("LOGOUT HANDLER", error);
-      res.status(INTERNAL_SERVER_ERROR).json({ message: "Error Loggin Out" });
+      errorHandler(res, error, "Error Loggin Out");
     }
   },
 };

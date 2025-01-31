@@ -21,11 +21,11 @@ const AdminDashboard = () => {
   const fetchUserDashboardData = async () => {
     try {
       const responses = await Promise.all([
-        API.get(`/event/event_stats/${user._id}`),
-        API.get(`/user/get_users/${user._id}`),
-        API.get(`/user/get_profile/${user._id}`),
+        API.get("/event/event_stats"),
+        API.get("/user/get_users"),
+        API.get("/user/get_profile"),
       ]);
-      console.log("ressssssss", responses);
+
       setStatData({
         eventsCreated: responses[0].data.stats.eventsCreated,
         userCount: responses[1].data.allUsers.length,

@@ -9,6 +9,7 @@ const { connectToDatabase } = require("./config/db");
 const authRoutes = require("./routes/auth.route");
 const eventRoutes = require("./routes/event.route");
 const userRoutes = require("./routes/user.route");
+const { authenticate } = require("./middleware/authenticate");
 
 const app = express();
 
@@ -31,8 +32,8 @@ app.get("/", (_, res) => {
 });
 
 app.use("/auth", authRoutes);
-app.use("/event", eventRoutes);
-app.use("/user", userRoutes);
+app.use("/event", authenticate, eventRoutes);
+app.use("/user", authenticate, userRoutes);
 
 app.listen(PORT, async () => {
   console.log(`Server is running on Port ${PORT} in ${NODE_ENV} enviroment`);

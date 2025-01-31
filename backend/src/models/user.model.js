@@ -39,6 +39,11 @@ userSchema.statics.isAdmin = async function (adminId) {
   return user?.role === "admin";
 };
 
+userSchema.statics.isUser = async function (userId) {
+  const user = await this.findById(userId);
+  return user?.role === "user";
+};
+
 const userModel = mongoose.model("User", userSchema);
 
 module.exports = userModel;

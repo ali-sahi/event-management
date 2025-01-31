@@ -23,9 +23,7 @@ const ManageUsers = () => {
 
   const handleDeleteClick = async (id) => {
     try {
-      console.log("asdasdasd", id);
-
-      const res = await API.delete(`/user/delete/${user._id}`, { data: { userId: id } });
+      const res = await API.delete("/user/delete", { data: { userId: id } });
       toast.success(res.data.message);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
@@ -46,7 +44,7 @@ const ManageUsers = () => {
 
   const processRowUpdate = async (newRow) => {
     try {
-      const res = await API.post(`/user/change_role/${user._id}`, { userId: newRow.id, role: newRow.role });
+      const res = await API.post("/user/change_role", { userId: newRow.id, role: newRow.role });
       toast.success(res.data.message);
       const updatedRow = { ...newRow, isNew: false };
       setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
@@ -57,12 +55,6 @@ const ManageUsers = () => {
   };
 
   const columns = [
-    {
-      field: "name",
-      headerName: "Name",
-      width: 150,
-      valueFormatter: (params) => "test",
-    },
     {
       field: "email",
       headerName: "Email",
@@ -138,7 +130,7 @@ const ManageUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await API.get(`/user/get_users/${user._id}`);
+        const res = await API.get("/user/get_users");
         const transformedData = res.data.allUsers.map((user) => {
           return { ...user, id: user._id };
         });

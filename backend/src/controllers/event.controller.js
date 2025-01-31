@@ -1,4 +1,4 @@
-const { OK } = require("../constants/httpStatusCode");
+const { OK, UNAUTHORIZED } = require("../constants/httpStatusCode");
 const EventModel = require("../models/event.model");
 const UserModel = require("../models/user.model");
 const { errorHandler } = require("../utils/errorHandler");
@@ -7,10 +7,13 @@ const { eventSchema } = require("../schemas/event.schema");
 module.exports = {
   createEvent: async (req, res) => {
     try {
-      console.log("event values", req.body);
-      const { userId } = req.params;
+      const { userId } = req;
 
-      console.log(userId);
+      const isUser = await UserModel.isUser(userId);
+
+      if (!isUser) {
+        return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });
+      }
 
       const { eventDate, eventTime, ...otherData } = req.body;
 
@@ -32,19 +35,36 @@ module.exports = {
   },
   getAllEvents: async (req, res) => {
     try {
-      const eventsList = await EventModel.find();
-      res.status(OK).json({ message: "Event Created", eventsList });
+      const { userId } = req;
+
+      console.log(userId);
+
+      const isUser = await UserModel.isUser(userId);
+      const isAdmin = await UserModel.isAdmin(userId);
+
+      if (isUser || isAdmin) {
+        const eventsList = await EventModel.find();
+        return res.status(OK).json({ message: "Event Created", eventsList });
+      }
+
+      return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });
     } catch (error) {
       errorHandler(res, error, "Error retrieving list of  Event");
     }
   },
   joinEvent: async (req, res) => {
     try {
-      console.log("data", req.body);
+      const { userId } = req;
 
-      const { userId, eventId } = req.body;
+      const isUser = await UserModel.isUser(userId);
 
-      const updateEvent = await EventModel.findByIdAndUpdate(eventId, {
+      if (!isUser) {
+        return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });
+      }
+
+      const { eventId } = req.body;
+
+      await EventModel.findByIdAndUpdate(eventId, {
         $push: { joinedUsers: userId },
       });
 
@@ -55,8 +75,7 @@ module.exports = {
   },
   getEventStatistics: async (req, res) => {
     try {
-      const { userId } = req.params;
-      console.log("data", userId);
+      const { userId } = req;
 
       const allEvents = await EventModel.find();
 
@@ -66,7 +85,6 @@ module.exports = {
 
       if (!isAdmin) {
         eventsCreated = allEvents.filter((item) => {
-          console.log("asdada", item.userId);
           return item.userId.toString() === userId;
         });
 
@@ -94,29 +112,27 @@ module.exports = {
   },
   deleteEvent: async (req, res) => {
     try {
-      const { userId } = req.params;
-      const { eventId } = req.body;
-
+      const { userId } = req;
       const isAdmin = await UserModel.isAdmin(userId);
 
       if (!isAdmin) {
         return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });
       }
 
+      const { eventId } = req.body;
+
       await EventModel.deleteOne({ _id: eventId });
 
       res.status(OK).json({ message: "Event Deleted" });
     } catch (error) {
-      errorHandler(res, error, "Error Joining Event");
+      errorHandler(res, error, "Error Deleting Event");
     }
   },
 
   changeEventStatus: async (req, res) => {
     try {
-      const { userId } = req.params;
+      const { userId } = req;
       const { eventId, status } = req.body;
-
-      console.log(eventId, status);
 
       const isAdmin = await UserModel.isAdmin(userId);
 
@@ -128,9 +144,9 @@ module.exports = {
         status,
       });
 
-      res.status(OK).json({ message: "Event Deleted" });
+      res.status(OK).json({ message: "Event Status Changed" });
     } catch (error) {
-      errorHandler(res, error, "Error Joining Event");
+      errorHandler(res, error, "Error Changing Event Status");
     }
   },
 };

@@ -6,7 +6,6 @@ import { Field, Form, Formik } from "formik";
 import { CheckAxiosError } from "../utils/checkAxiosError";
 import API from "../config/apiClient";
 import toast from "react-hot-toast";
-import { useAuth } from "../providers/AuthProvider";
 import { eventValidationSchema } from "../schemas/eventSchema";
 import CustomFieldError from "../components/CustomFieldError";
 
@@ -23,10 +22,9 @@ const initialValues = {
 };
 
 const CreateEvent = () => {
-  const { user } = useAuth();
   const submitHandle = async (values) => {
     try {
-      const res = await API.post(`/event/create_event/${user._id}`, values);
+      const res = await API.post("/event/create_event", values);
 
       toast.success(res.data.message);
     } catch (error) {

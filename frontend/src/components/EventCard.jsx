@@ -33,7 +33,6 @@ const EventCard = ({ eventTitle, eventDate, joinedUsers, fetchEvents, ...eventMe
   const joinEventHandler = async () => {
     try {
       const response = await API.post("/event/join_event", {
-        userId: user._id,
         eventId: eventMetaData._id,
       });
 
