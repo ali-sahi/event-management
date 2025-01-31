@@ -40,7 +40,7 @@ module.exports = {
       const isUser = await UserModel.isUser(userId);
       const isAdmin = await UserModel.isAdmin(userId);
 
-      if (isUser || isAdmin) {
+      if (isUser) {
         const { page = 1, limit = 1 } = req.query;
 
         const eventsList = await EventModel.find({ status: "approved" })
@@ -55,6 +55,11 @@ module.exports = {
           totalPages: Math.ceil(totalEvents / limit),
           currentPage: parseInt(page),
         });
+      }
+
+      if (isAdmin) {
+        const eventsList = await EventModel.find();
+        return res.status(OK).json({ message: "Event Created", eventsList });
       }
 
       return res.status(UNAUTHORIZED).json({ message: "Not Allowed" });
@@ -108,13 +113,9 @@ module.exports = {
         });
       }
 
-      eventsCreated = allEvents.map((item) => {
-        return item;
-      });
-
       res.status(OK).json({
         message: "Stats Returned",
-        stats: { eventsCreated: eventsCreated.length },
+        stats: { eventsCreated: allEvents.length },
       });
     } catch (error) {
       errorHandler(res, error, "Error Joining Event");

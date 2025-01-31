@@ -22,11 +22,11 @@ const initialValues = {
 };
 
 const CreateEvent = () => {
-  const submitHandle = async (values) => {
+  const submitHandle = async (values, { resetForm }) => {
     try {
       const res = await API.post("/event/create_event", values);
-
       toast.success(res.data.message);
+      resetForm();
     } catch (error) {
       CheckAxiosError(error);
     }
