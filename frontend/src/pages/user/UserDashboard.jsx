@@ -1,9 +1,9 @@
-import { Grid2, Paper } from "@mui/material";
-import StatCard from "../components/StatCard";
-import UserProfile from "../components/UserProfile";
-import API from "../config/apiClient";
-import { CheckAxiosError } from "../utils/checkAxiosError";
 import { useEffect, useState } from "react";
+import API from "../../config/apiClient";
+import { CheckAxiosError } from "../../utils/checkAxiosError";
+import { Grid2, Paper } from "@mui/material";
+import StatCard from "../../components/StatCard";
+import UserProfile from "../../components/UserProfile";
 
 const UserDashboard = () => {
   const [statData, setStatData] = useState({

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../providers/AuthProvider";
 import API from "../../config/apiClient";
 import { CheckAxiosError } from "../../utils/checkAxiosError";
 import { Grid2, Paper } from "@mui/material";
@@ -16,16 +15,15 @@ const AdminDashboard = () => {
     name: "",
     role: "",
   });
-  const { user } = useAuth();
 
   const fetchUserDashboardData = async () => {
     try {
       const responses = await Promise.all([
-        API.get(`/event/event_stats/${user._id}`),
-        API.get(`/user/get_users/${user._id}`),
-        API.get(`/user/get_profile/${user._id}`),
+        API.get("/event/event_stats"),
+        API.get("/user/get_users"),
+        API.get("/user/get_profile"),
       ]);
-      console.log("ressssssss", responses);
+
       setStatData({
         eventsCreated: responses[0].data.stats.eventsCreated,
         userCount: responses[1].data.allUsers.length,

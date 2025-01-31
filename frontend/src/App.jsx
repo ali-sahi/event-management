@@ -3,13 +3,17 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Toaster } from "react-hot-toast";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import { useTheme } from "@mui/material";
-import Dashboard from "./pages/Dashboard";
-import ManageUsers from "./pages/ManageUsers";
-import ManageEvents from "./pages/ManageEvents";
-import CreateEvent from "./pages/CreateEvent";
-import AllEvents from "./pages/AllEvents";
+
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Singup";
+
+import Dashboard from "./pages/Dashboard";
+
+import ManageEvents from "./pages/admin/ManageEvents";
+import ManageUsers from "./pages/ManageUsers";
+
+import CreateEvent from "./pages/user/CreateEvent";
+import AllEvents from "./pages/user/AllEvents";
 
 const App = () => {
   const theme = useTheme();

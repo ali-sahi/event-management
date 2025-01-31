@@ -1,11 +1,11 @@
-import { Paper } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridRowModes } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import API from "../config/apiClient";
-import { CheckAxiosError } from "../utils/checkAxiosError";
+import API from "../../config/apiClient";
 import toast from "react-hot-toast";
+import { CheckAxiosError } from "../../utils/checkAxiosError";
 import dayjs from "dayjs";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { Paper } from "@mui/material";
 
 const ManageUsers = () => {
   const [rows, setRows] = useState([]);

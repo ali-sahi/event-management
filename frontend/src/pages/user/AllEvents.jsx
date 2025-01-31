@@ -1,6 +1,6 @@
 import { Grid2 } from "@mui/material";
-import EventCard from "../components/EventCard";
-import { useFetchEvents } from "../hooks/useFetchEvents";
+import { useFetchEvents } from "../../hooks/useFetchEvents";
+import EventCard from "../../components/EventCard";
 
 const AllEvents = () => {
   const { eventsList, fetchEvents } = useFetchEvents();

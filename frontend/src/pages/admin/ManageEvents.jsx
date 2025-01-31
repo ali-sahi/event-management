@@ -1,16 +1,14 @@
-import { Paper } from "@mui/material";
-import { DataGrid, GridActionsCellItem, GridRowModes } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import API from "../config/apiClient";
-import { useAuth } from "../providers/AuthProvider";
-import { CheckAxiosError } from "../utils/checkAxiosError";
+import { useFetchEvents } from "../../hooks/useFetchEvents";
+import { DataGrid, GridActionsCellItem, GridRowModes } from "@mui/x-data-grid";
+import API from "../../config/apiClient";
 import toast from "react-hot-toast";
+import { CheckAxiosError } from "../../utils/checkAxiosError";
 import dayjs from "dayjs";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
-import { useFetchEvents } from "../hooks/useFetchEvents";
+import { Paper } from "@mui/material";
 
 const ManageEvents = () => {
-  const { user } = useAuth();
   const { eventsList } = useFetchEvents();
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});

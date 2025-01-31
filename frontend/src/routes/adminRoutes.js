@@ -1,6 +1,5 @@
 import { CalendarViewDay, DashboardOutlined, ManageAccounts } from "@mui/icons-material";
 import ManageUsers from "../pages/ManageUsers";
-import Dashboard from "../pages/Dashboard";
 import ManageEvents from "../pages/ManageEvents";
 
 export const adminRoutes = [
@@ -8,7 +7,6 @@ export const adminRoutes = [
     icon: DashboardOutlined,
     label: "Dashboard",
     href: "/",
-    component: Dashboard,
   },
   {
     icon: ManageAccounts,
