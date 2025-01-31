@@ -1,14 +1,9 @@
-const { JWT_SECRET } = require("../constants/envConstants");
 const { UNAUTHORIZED } = require("../constants/httpStatusCode");
 const { verifyToken } = require("../utils/jwt");
-const jwt = require("jsonwebtoken");
 
 module.exports.authenticate = (req, res, next) => {
   try {
     const accessToken = req.cookies.accessToken;
-
-    console.info("Middleware accessToken");
-    console.info("Acess Token", accessToken);
 
     const decodeInfo = verifyToken(accessToken);
 
@@ -18,8 +13,6 @@ module.exports.authenticate = (req, res, next) => {
     }
 
     const { userId, role } = decodeInfo;
-
-    console.error("Decoded Info", decodeInfo);
 
     req.userId = userId;
     req.role = role;

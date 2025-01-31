@@ -4,7 +4,6 @@ import UserProfile from "../components/UserProfile";
 import API from "../config/apiClient";
 import { CheckAxiosError } from "../utils/checkAxiosError";
 import { useEffect, useState } from "react";
-import { useAuth } from "../providers/AuthProvider";
 
 const UserDashboard = () => {
   const [statData, setStatData] = useState({
@@ -16,7 +15,6 @@ const UserDashboard = () => {
     name: "",
     role: "",
   });
-  const { user } = useAuth();
 
   const fetchUserDashboardData = async () => {
     try {

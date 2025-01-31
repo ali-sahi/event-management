@@ -2,14 +2,12 @@ import { Paper } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridRowModes } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import API from "../config/apiClient";
-import { useAuth } from "../providers/AuthProvider";
 import { CheckAxiosError } from "../utils/checkAxiosError";
 import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 
 const ManageUsers = () => {
-  const { user } = useAuth();
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
