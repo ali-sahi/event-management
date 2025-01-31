@@ -58,7 +58,7 @@ const Sidebar = () => {
       anchor="left"
     >
       <Toolbar />
-      <Divider />
+
       <List>
         {role === "admin" && renderAdminMenuItems()}
         {role === "user" && renderUserMenuItems()}

@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import { createContext, useContext, useState } from "react";
 import API from "../config/apiClient";
 import toast from "react-hot-toast";
 import { getUserFromLocalStorage, removeUserFromLocalStorage, setUserToLocalStorage } from "../utils/localStorage";
@@ -6,9 +7,10 @@ import { getUserFromLocalStorage, removeUserFromLocalStorage, setUserToLocalStor
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // const userValue = userFromStorage ? userFromStorage : null;
+  const userFromStorage = getUserFromLocalStorage();
+  const userValue = userFromStorage ? userFromStorage : null;
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(userValue);
 
   const registerUser = async (values) => {
     const res = await API.post("/auth/register", values);
@@ -30,12 +32,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  useEffect(() => {
-    const userFromStorage = getUserFromLocalStorage();
-    setUser(userFromStorage);
-  }, []);
-
-  return <AuthContext.Provider value={{ user, login, logout, registerUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, login, logout, registerUser }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

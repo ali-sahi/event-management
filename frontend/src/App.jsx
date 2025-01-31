@@ -39,20 +39,20 @@ const App = () => {
       <Toaster
         toastOptions={{
           style: {
-            background: theme.palette.background.paper,
+            background: "#1E1E1E",
             color: theme.palette.text.primary,
             borderRadius: "8px",
             padding: "10px 20px",
           },
           success: {
             style: {
-              background: theme.palette.success.main,
+              background: "#1E1E1E",
               color: theme.palette.text.primary,
             },
           },
           error: {
             style: {
-              background: theme.palette.error.main,
+              background: "#1E1E1E",
               color: theme.palette.text.primary,
             },
           },

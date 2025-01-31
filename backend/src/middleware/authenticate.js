@@ -8,9 +8,11 @@ module.exports.authenticate = (req, res, next) => {
     const decodeInfo = verifyToken(accessToken);
 
     if (!decodeInfo) {
-      console.log("No Decode Token");
+      console.log("Token Decode Unsucesss");
       return res.status(UNAUTHORIZED).json({ message: "Token expired decode" });
     }
+
+    console.log("Token Decode Success");
 
     const { userId, role } = decodeInfo;
 

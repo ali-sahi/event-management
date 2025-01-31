@@ -9,6 +9,8 @@ import { useAuth } from "../../providers/AuthProvider";
 
 import { loginSchema } from "../../schemas/authSchema";
 import CustomFieldError from "../../components/CustomFieldError";
+import { useAxios } from "../../providers/AxiosInterceptorProvider";
+import { useEffect } from "react";
 
 const initialValues = {
   email: "",
@@ -18,6 +20,11 @@ const initialValues = {
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { setSessionExpired } = useAxios();
+
+  useEffect(() => {
+    setSessionExpired(false);
+  }, []);
 
   const handleSubmit = async (values) => {
     try {
